@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--控制全局mybatis信息-->
+    <settings>
+        <!--开启日志-->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
+
+    <!--自定义返回类型的别名，用于resultType处-->
+    <typeAliases>
+        <!--第一种方法-->
+        <!--<typeAlias type="com.bjpowernode.domain.Student" alias="stu" />-->
+
+        <!--第二种方法
+            <package> name是包名,这个包中的左右类，类名和方法名可直接用作别名
+        -->
+        <package name="com.bjpowernode.domain" />
+    </typeAliases>
+
+    <environments default="mydev">
+
+        <environment id="mydev">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/springdb"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+
+    <!--sql映射文件的位置，从target/classes路径下开始-->
+    <mappers>
+        <mapper resource="com/bjpowernode/dao/StudentDao.xml" />
+    </mappers>
+
+</configuration>

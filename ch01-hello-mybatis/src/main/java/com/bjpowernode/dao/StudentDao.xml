@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace命名空间，接口的全限定名称-->
+<mapper namespace="com.bjpowernode.dao.StudentDao">
+
+    <!--select语句，其中id表示SQL语句的唯一标识，为接口中的方法名,resultType表示返回对象的类型-->
+    <select id="selectStudents" resultType="com.bjpowernode.domain.Student">
+        select id,name,email,age from student order by id
+    </select>
+
+    <insert id="insertStudents">
+        insert into student value(#{id},#{name},#{email},#{age})
+    </insert>
+
+</mapper>

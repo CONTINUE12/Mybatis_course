@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace命名空间，接口的全限定名称-->
+<mapper namespace="com.bjpowernode.dao.StudentDao">
+
+    <!--
+    内部机制：
+        Mybatis创建Connection,PreparedStatement对象
+        String sql = "select id,name,email,age from student where id = ?"
+        PreparedStatement pst = conn.PreparedStatement(sql)
+        pst.setInt(1,1001)
+
+        然后对返回结果进行封装
+    -->
+
+    <!--select语句，其中id表示SQL语句的唯一标识，为接口中的方法名,resultType表示返回对象的类型-->
+    <select id="selectStudentsById" parameterType="java.lang.Integer" resultType="Student">
+        select id,name,email,age from student where id = #{id}
+    </select>
+
+    <!--使用@param命名传参-->
+    <select id="selectMulyiParam" resultType="com.bjpowernode.domain.Student">
+        select id,name,email,age from student where id = #{myname} or age = #{myage}
+    </select>
+
+    <!--使用java对象方式-->
+    <select id="selectMultiObject" resultType="com.bjpowernode.domain.Student">
+        select id,name,email,age from student where name = #{paramname} or age = #{paramage}
+    </select>
+
+    <!--返回map类型,,只能返回一行-->
+    <select id="selectMap" resultType="java.util.HashMap">
+         select id,name from student where id = #{id}
+    </select>
+
+    <!--resultMap
+      先定义，后使用
+    -->
+    <resultMap id="studentMap" type="com.bjpowernode.domain.MyStudent">
+        <!--定义数据表列名和类属性的关系-->
+        <id column="id" property="stuid" />
+        <!--非主键列，使用result-->
+        <result column="name" property="stuname" />
+        <result column="email" property="stuemail" />
+        <result column="age" property="stuage" />
+
+    </resultMap>
+    <!--方法一-->
+    <select id="selectUseResultMap" resultMap="studentMap">
+        select id,name,email,age from student
+    </select>
+
+    <!--方法二-->
+    <select id="selectUseResultType" resultType="com.bjpowernode.domain.MyStudent">
+        select id as stuid,name as stuname,email as stuemail,age as stuage from student
+    </select>
+
+    <!--第一种方式，like查询，java代码中指定like的内容-->
+    <select id="selectLikeOne" resultType="com.bjpowernode.domain.Student">
+        select id,name,email,age from student where name like #{name}
+    </select>
+    <!--第二种方式，使用拼接-->
+    <select id="selectLikeTwo" resultType="com.bjpowernode.domain.Student">
+        select id,name,email,age from student where name like "%" #{name} "%"
+    </select>
+
+</mapper>

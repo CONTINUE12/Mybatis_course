@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace命名空间，接口的全限定名称-->
+<mapper namespace="com.bjpowernode.dao.StudentDao">
+
+    <!--sql代码片段复用,使用时加上<include>标签-->
+    <!--<include refid="StudentSql" />
+    <sql id="StudentSql">
+        select id,name,email,age from student
+    </sql>-->
+
+    <!--条件查询语句IF-->
+    <select id="selectStudentIf" resultType="com.bjpowernode.domain.Student">
+        <!--<include refid="StudentSql" />-->
+        select id,name,email,age from student
+        where  /*1 = 1  防止sql拼接语法错误*/
+        <if test="name != null and name != ''" >
+            name = #{name}
+        </if>
+        <if test="age > 0">
+            or age > #{age}
+        </if>
+    </select>
+
+    <!--Where语句-->
+    <select id="selectStudentWhere" resultType="com.bjpowernode.domain.Student">
+        select id,name,email,age from student
+        <where>
+            <if test="name != null and name != ''" >
+                name = #{name}
+            </if>
+            <if test="age > 0">
+                or age > #{age}
+            </if>
+        </where>
+    </select>
+
+    <!--foreach语句-->
+    <!--循环ID-->
+    <select id="selectStudentForEachOne" resultType="com.bjpowernode.domain.Student">
+        select * from student where id in
+        <foreach collection="list" item="myId" open="(" close=")" separator=",">
+            #{myId}
+        </foreach>
+    </select>
+    <!--循环对象的属性-->
+    <select id="selectStudentForEachTwo" resultType="com.bjpowernode.domain.Student">
+        select * from student where id in
+        <foreach collection="list" item="stu" open="(" close=")" separator=",">
+            #{stu.id}
+        </foreach>
+    </select>
+
+    <!--分页查看-->
+    <select id="selectAll" resultType="com.bjpowernode.domain.Student">
+        select * from student
+    </select>
+
+</mapper>
